@@ -12,12 +12,14 @@ datasource db {
 
 // ── 使用者與角色（後台帳號） ──
 model User {
-  id        Int      @id @default(autoincrement())
-  email     String   @unique
-  password  String   // bcrypt 雜湊密碼
-  role      Role     @default(SUPER_ADMIN)
-  name      String
-  createdAt DateTime @default(now())
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  password         String   // bcrypt 雜湊密碼
+  role             Role     @default(SUPER_ADMIN)
+  name             String
+  twoFactorEnabled Boolean  @default(false) // 是否啟用二次驗證
+  twoFactorSecret  String?  // 二次驗證金鑰 (OTP Secret)
+  createdAt        DateTime @default(now())
 }
 
 enum Role {
