@@ -25,6 +25,7 @@ description: >
 | **Part 4** | [references/04-testing.md](references/04-testing.md) | 測試策略、工具、覆蓋率目標 |
 | **Part 5** | [references/05-debugging.md](references/05-debugging.md) | 快速 Debug 方法、工具配置 |
 | **Part 6** | [references/06-feature-workflow.md](references/06-feature-workflow.md) | 功能開發 SOP（計畫 → 實作 → 文件） |
+| **Part 7** | [references/07-security.md](references/07-security.md) | 資訊安全規範、個資合規、資安 Checklist |
 
 ---
 
@@ -37,6 +38,9 @@ description: >
 3. **每個完成的功能，必須附帶 SOP 文件**
 4. **所有對外 API 必須有角色權限驗證（RBAC）**
 5. **所有收集個人資料的功能，必須有個資法同意記錄**
+6. **所有 API 輸入必須通過 Zod Schema 驗證**
+7. **JWT 必須存在 HttpOnly Cookie，禁止存在 localStorage**
+8. **每個功能上線前必須通過 Part 7 的資安 Checklist**
 6. **命名規範必須全專案一致**（詳見 Part 2）
 
 ---
