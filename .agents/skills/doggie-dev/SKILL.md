@@ -41,7 +41,8 @@ description: >
 6. **所有 API 輸入必須通過 Zod Schema 驗證**
 7. **JWT 必須存在 HttpOnly Cookie，禁止存在 localStorage**
 8. **每個功能上線前必須通過 Part 7 的資安 Checklist**
-6. **命名規範必須全專案一致**（詳見 Part 2）
+9. **每次新增/修改功能，必須同步更新 `CHANGELOG.md` 與 `README.md`**
+10. **命名規範必須全專案一致**（詳見 Part 2）
 
 ---
 

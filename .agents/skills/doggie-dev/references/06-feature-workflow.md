@@ -5,13 +5,17 @@
 ```
 Step 1：閱讀 SKILL     → 確認架構規範
 Step 2：產出 Feature Plan → 取得確認
-Step 3：實作           → 遵守所有 Part 1–5 規範
+Step 3：實作           → 遵守所有 Part 1–5 規範（含 Part 7 資安）
 Step 4：測試           → 符合 Part 4 覆蓋率目標
-Step 5：產出 SOP 文件  → 存入 docs/
-Step 6：更新 Walkthrough → 記錄完成狀態
+Step 5：更新 CHANGELOG → 在 CHANGELOG.md 新增對應版本記錄（必須）
+Step 6：更新 README    → 若有新增功能/指令/設定，必須同步更新 README.md
+Step 7：產出 SOP 文件  → 存入 docs/sop/
+Step 8：更新 Walkthrough → 記錄完成狀態
+Step 9：git commit + push → Commit 訊息需符合 Conventional Commits 格式
 ```
 
 > **禁止**在未獲得 Feature Plan 確認前開始寫程式碼。
+> **禁止**完成功能後未更新 CHANGELOG 就 commit。
 
 ---
 
