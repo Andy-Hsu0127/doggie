@@ -7,8 +7,8 @@ node_modules/
 .env.production
 
 # 資料庫檔案（本地資料，不進版控）
-prisma/*.db
-prisma/*.db-journal
+*.db
+*.db-journal
 
 # 日誌檔案
 logs/
@@ -33,3 +33,5 @@ coverage/
 # 暫存檔案
 *.tmp
 *.temp
+
+/src/generated/prisma

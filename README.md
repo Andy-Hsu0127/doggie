@@ -42,6 +42,9 @@ npx prisma migrate dev --name init
 
 # 4. 啟動開發伺服器
 npm run dev
+
+# 5. 執行單元與整合測試
+npm run test
 ```
 
 開啟瀏覽器：

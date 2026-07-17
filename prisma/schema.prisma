@@ -1,0 +1,104 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+// ── 使用者與角色（後台帳號） ──
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String   // bcrypt 雜湊密碼
+  role      Role     @default(SUPER_ADMIN)
+  name      String
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  SUPER_ADMIN
+  ANALYST
+  STAFF
+  CLIENT
+}
+
+// ── 客戶主檔（CRM 基礎） ──
+model Client {
+  id        Int                  @id @default(autoincrement())
+  name      String
+  lineName  String?
+  phone     String?
+  dogs      Dog[]
+  surveys   SurveySatisfaction[]
+  marketSurveys SurveyMarket[]
+  createdAt DateTime             @default(now())
+}
+
+// ── 狗狗檔案（一位飼主可有多隻） ──
+model Dog {
+  id        Int      @id @default(autoincrement())
+  client    Client   @relation(fields: [clientId], references: [id])
+  clientId  Int
+  name      String
+  breed     String?
+  size      DogSize
+  birthYear Int?
+  notes     String?  // 特殊習性、醫療備註
+  careLogs  CareLog[]
+}
+
+enum DogSize {
+  SMALL
+  MEDIUM
+  LARGE
+}
+
+// ── 問卷 A：服務滿意度（Phase 1） ──
+model SurveySatisfaction {
+  id            Int      @id @default(autoincrement())
+  client        Client?  @relation(fields: [clientId], references: [id])
+  clientId      Int?     // 可選，未來與 CRM 串聯
+  sessionLabel  String   // 接送場次標籤，如「2026-07-17」
+  ratingOverall Int      // 1-5 星
+  ratingStaff   Int      // 1-5 星
+  dogCondition  String   // "GREAT" | "NORMAL" | "CONCERN"
+  npsScore      Int      // 0-10
+  feedback      String?
+  consented     Boolean  @default(true)  // 個資法同意
+  submittedAt   DateTime @default(now())
+}
+
+// ── 問卷 B：市場調查（Phase 2） ──
+model SurveyMarket {
+  id              Int      @id @default(autoincrement())
+  client          Client?  @relation(fields: [clientId], references: [id])
+  clientId        Int?
+  dogSize         String?
+  painPoints      String?  // JSON 陣列字串
+  topFactors      String?  // JSON 陣列字串
+  pricingWebcam   String?
+  addonPrefs      String?  // JSON 陣列字串
+  trialImportance Int?
+  distanceRange   String?
+  otherFeedback   String?
+  submittedAt     DateTime @default(now())
+}
+
+// ── 預留：照護日誌（Phase 3） ──
+model CareLog {
+  id        Int      @id @default(autoincrement())
+  dog       Dog      @relation(fields: [dogId], references: [id])
+  dogId     Int
+  date      DateTime
+  meals     String?
+  health    String?
+  mood      String?
+  photos    String?  // JSON 陣列字串
+  staffNote String?
+  createdAt DateTime @default(now())
+}

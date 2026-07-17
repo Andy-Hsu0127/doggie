@@ -12,9 +12,22 @@
 ## [Unreleased] — 開發中
 
 ### 規劃中
-- Phase 1：問卷 A 滿意度調查（前端頁面 + API + 資料庫）
 - Phase 1：管理員後台儀表板（登入 + NPS 圖表 + 低分警示）
 - Phase 1：CSV 匯出功能
+
+---
+
+## [0.4.0] — 2026-07-17
+
+### Added（新增）
+- **問卷 A 服務滿意度系統**：
+  - Next.js 15 + TypeScript + Tailwind CSS 專案初始化與結構佈署。
+  - Prisma Schema 與 SQLite 資料庫設定，完成 `User`, `Client`, `Dog`, `SurveySatisfaction`, `SurveyMarket`, `CareLog` 等 models 建置。
+  - 完成 `POST /api/survey/satisfaction` API 端點與 Zod Schema 驗證。
+  - 完成 `SurveyForm`, `StarRating`, `NpsSlider`, `DogConditionSelector` 等 React 手機優先問卷元件。
+  - 建立 `/survey` 入口頁與 `/success` 感謝頁。
+  - 撰寫 `survey.service.ts` 數據處理服務並實作 3 項單元測試，測試通過率 100%。
+  - 建立功能計畫 (`docs/features/survey-satisfaction/PLAN.md`) 與 SOP 文件 (`docs/sop/survey-satisfaction-SOP.md`)。
 
 ---
 
