@@ -12,8 +12,23 @@
 ## [Unreleased] — 開發中
 
 ### 規劃中
-- Phase 1：管理員後台儀表板（登入 + NPS 圖表 + 低分警示）
+- Phase 1：管理員後台儀表板（NPS 圖表 + 低分警示）
 - Phase 1：CSV 匯出功能
+
+---
+
+## [0.5.0] — 2026-07-17
+
+### Added（新增）
+- **管理員登入與 JWT 認證系統**：
+  - 開發 `/api/auth/login` 與 `/api/auth/logout` API，實作 JWT 簽發與 HttpOnly Cookie。
+  - 實作密碼雜湊與比對服務 `AuthService`（整合 `bcryptjs`）。
+  - 在 `User` 資料模型中預留 2FA（二次驗證）所需的 `twoFactorEnabled` 與 `twoFactorSecret` 欄位並順利遷移。
+  - 設計 `src/middleware.ts` 全域防護中介層，Edge-safe 方式解析 JWT 進行 `/admin` 路由保護。
+  - 建立 `/login` 登入頁面 UI（與 Next.js 歡迎頁完成整合導向）。
+  - 編寫 `auth.service.test.ts` 單元測試（實作 3 項測試，覆蓋率 100%）。
+  - 建立開發功能計畫 (`PLAN.md`) 與 SOP 文件 (`admin-auth-SOP.md`)。
+  - 新增資料庫種子 `prisma/seed.ts`，並在 `prisma.config.ts` 中配置自動 Seed 運行。
 
 ---
 

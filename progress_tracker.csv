@@ -7,7 +7,7 @@ Phase 1,P1-005,初始化 Prisma 資料庫,設定 Prisma Client 單例與 SQLite 
 Phase 1,P1-006,開發問卷 A API,完成 POST /api/survey/satisfaction 的 Zod 驗證與資料庫寫入邏輯,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
 Phase 1,P1-007,開發問卷 A 前端,完成星評/NPS/狗狗狀態/個資同意等手機優先前端問卷頁面,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
 Phase 1,P1-008,開發問卷 A 測試,完成 survey.service.ts 單元測試與 Playwright E2E 測試,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
-Phase 1,P1-009,開發後台管理員認證,完成後台管理員 JWT 登入 API 與 HttpOnly Cookie 認證機制,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-009,開發後台管理員認證,完成後台管理員 JWT 登入 API 與 HttpOnly Cookie 認證機制,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
 Phase 1,P1-010,開發後台儀表板 API,完成 GET /api/admin/stats 與 responses API（含 RBAC 權限驗證）,未開始,,,Antigravity,否,否,否,否,否
 Phase 1,P1-011,開發後台儀表板前端,完成 NPS 圖表/填寫趨勢/低分紅色警示等管理後台畫面,未開始,,,Antigravity,否,否,否,否,否
 Phase 1,P1-012,開發 CSV 匯出功能,完成後台問卷數據匯出 CSV 檔案功能,未開始,,,Antigravity,否,否,否,否,否
