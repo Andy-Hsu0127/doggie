@@ -77,6 +77,7 @@ doggie/
 - [Part 4：測試策略](.agents/skills/doggie-dev/references/04-testing.md)
 - [Part 5：Debug 方法](.agents/skills/doggie-dev/references/05-debugging.md)
 - [Part 6：功能開發 SOP](.agents/skills/doggie-dev/references/06-feature-workflow.md)
+- [Part 7：資訊安全規範](.agents/skills/doggie-dev/references/07-security.md)
 
 ---
 
