@@ -1,0 +1,17 @@
+﻿階段,任務編號,任務名稱,工作描述,狀態,開始日期,完成日期,負責人,DOD確認,SOP建立,Changelog更新,README更新,資安檢對
+Phase 1,P1-001,初始化專案與Git,設定.gitignore/README/Changelog/SKILL規範並推送到GitHub,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
+Phase 1,P1-002,建立進度追蹤表,建立 progress_tracker.csv 以追蹤專案開發進度,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
+Phase 1,P1-003,建立問卷 A Feature Plan,撰寫問卷 A 服務滿意度系統的開發計畫與設計規範,已完成,2026-07-17,2026-07-17,Antigravity,是,否,是,是,否
+Phase 1,P1-004,初始化 Next.js 專案,安裝 Next.js 15/TypeScript/Tailwind CSS 與設定專案基礎架構,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-005,初始化 Prisma 資料庫,設定 Prisma Client 單例與 SQLite 初始 Schema,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-006,開發問卷 A API,完成 POST /api/survey/satisfaction 的 Zod 驗證與資料庫寫入邏輯,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-007,開發問卷 A 前端,完成星評/NPS/狗狗狀態/個資同意等手機優先前端問卷頁面,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-008,開發問卷 A 測試,完成 survey.service.ts 單元測試與 Playwright E2E 測試,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-009,開發後台管理員認證,完成後台管理員 JWT 登入 API 與 HttpOnly Cookie 認證機制,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-010,開發後台儀表板 API,完成 GET /api/admin/stats 與 responses API（含 RBAC 權限驗證）,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-011,開發後台儀表板前端,完成 NPS 圖表/填寫趨勢/低分紅色警示等管理後台畫面,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-012,開發 CSV 匯出功能,完成後台問卷數據匯出 CSV 檔案功能,未開始,,,Antigravity,否,否,否,否,否
+Phase 2,P2-001,開發問卷 B 市調系統,擴大問卷至市場調查，收集狗狗體型/痛點/加值付費意願等數據,未開始,,,Antigravity,否,否,否,否,否
+Phase 2,P2-002,開發客戶管理 CRM,後台新增客戶清單、每隻狗狗歷史照顧與問卷紀錄,未開始,,,Antigravity,否,否,否,否,否
+Phase 3,P3-001,預約與接送排程系統,開發線上房型預約、接送司機排程與即時位置追蹤,未開始,,,Antigravity,否,否,否,否,否
+Phase 3,P3-002,24/7 視訊串流整合,串接 Webcams 提供 24/7 專屬房間與公共區即時監控畫面,未開始,,,Antigravity,否,否,否,否,否

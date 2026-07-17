@@ -63,7 +63,8 @@ doggie/
 │   ├── lib/                    ← 工具函式
 │   └── types/                  ← TypeScript 型別
 ├── tests/                      ← 測試檔案
-└── docs/                       ← 功能文件與 SOP
+├── docs/                       ← 功能文件與 SOP
+└── progress_tracker.csv        ← 專案開發進度追蹤表 (Excel 相容)
 ```
 
 ---

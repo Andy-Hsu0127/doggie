@@ -18,6 +18,20 @@
 
 ---
 
+## [0.3.0] — 2026-07-17
+
+### Added（新增）
+- **專案開發進度追蹤表** (`progress_tracker.csv`)：採用 UTF-8 BOM 編碼之 CSV 格式，追蹤各階段任務的狀態、日期、DOD、SOP 與資安核對。
+- **SKILL 規則修訂**：
+  - 新增「🚨 動工前強制閱讀（任何動作均適用）」於 `SKILL.md`，強制要求每次動工前必須閱讀並確認當前對話中的 `implementation_plan.md`，否則視為無效提交。
+  - 新增「📄 Implementation Plan 位置」說明。
+
+### Changed（修改）
+- `SKILL.md`：重新編排強制規則表，將「確認動工前清單」列為強制規則第 1 條。
+- `README.md`：更新專案結構，加入 `progress_tracker.csv`。
+
+---
+
 ## [0.2.0] — 2026-07-17
 
 ### Added（新增）
