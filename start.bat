@@ -1,43 +1,40 @@
 @echo off
-chcp 65001 >nul
-title 🐾 毛孩照護系統 - 快捷啟動器 🐾
+title Doggie Care System - Starter
 
 echo ==================================================
-echo         🐾 毛孩照護系統 — 本地啟動服務 🐾
+echo         Doggie Care System - Local Server
 echo ==================================================
 echo.
 
-:: 1. 檢查並安裝套件
+:: 1. Check and install dependencies
 if not exist "node_modules\" (
-    echo [1/3] 正在安裝必要套件，請稍候...
+    echo [1/3] Installing dependencies, please wait...
     call npm install
 ) else (
-    echo [1/3] 套件已安裝，跳過安裝步驟。
+    echo [1/3] Dependencies already installed. Skipping.
 )
 
-:: 2. 檢查並初始化資料庫
+:: 2. Check and migrate database
 if not exist "doggie.db" (
-    echo [2/3] 正在初始化 SQLite 資料庫與種子資料...
+    echo [2/3] Initializing SQLite database and seeds...
     call npx prisma migrate dev --name init
     call npx prisma db seed
 ) else (
-    echo [2/3] 資料庫檔案 doggie.db 已存在，跳過初始化。
+    echo [2/3] Database file doggie.db found. Skipping.
 )
 
-:: 3. 啟動 Next.js 本地伺服器
-echo [3/3] 正在背景啟動 Next.js 開發伺服器...
+:: 3. Start Next.js development server
+echo [3/3] Starting Next.js server in the background...
 start /min cmd /c "npm run dev"
 
 echo.
 echo ==================================================
-echo  ✅ 服務啟動中！
-echo  - 伺服器正在最小化視窗（背景）運行。
-echo  - 5 秒後將自動開啟網頁。
-echo  - 如需停止服務，請關閉最小化的伺服器視窗即可。
+echo  Server is starting in a minimized window!
+echo  Opening pages in 5 seconds...
 echo ==================================================
 timeout /t 5 >nul
 
-:: 4. 自動開啟問卷與後台
+:: 4. Auto-open browser
 start http://localhost:3000
 start http://localhost:3000/login
 
