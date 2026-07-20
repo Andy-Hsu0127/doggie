@@ -54,6 +54,8 @@ describe('SurveyService', () => {
         avgOverall: 0,
         avgStaff: 0,
         npsScore: 0,
+        dogConditions: { GREAT: 0, NORMAL: 0, CONCERN: 0 },
+        weeklyTrends: [],
       })
     })
 

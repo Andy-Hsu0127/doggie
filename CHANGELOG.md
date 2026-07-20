@@ -12,8 +12,24 @@
 ## [Unreleased] — 開發中
 
 ### 規劃中
-- Phase 1：管理員後台儀表板（NPS 圖表 + 低分警示）
 - Phase 1：CSV 匯出功能
+
+---
+
+## [0.6.0] — 2026-07-20
+
+### Added（新增）
+- **管理後台儀表板系統**：
+  - 開發 `/api/admin/stats` 與 `/api/admin/responses` API 端點，提供滿意度統計與歷史明細。
+  - 設計權限防禦輔助函式 `authorizeAdmin`，在後台 API 端點進行嚴格的 JWT 角色（RBAC）檢驗。
+  - 建立 `/admin` 佈局與側邊欄元件（含安全登出按鈕）。
+  - 建立儀表板 KPI 指標卡片 `StatsCards`（顯示 NPS 與滿意度平均星評）。
+  - 以輕量化、極速的 SVG 渲染方式繪製 NPS 週趨勢折線圖與狗狗狀態分佈圖。
+  - 實作「低分警示區」元件 `AlertList`，顯眼呈現 NPS ≤ 6 批評者回饋。
+  - 實作「明細記錄」元件 `ResponseTable`，提供模糊搜尋以快速查驗場次或回饋。
+  - 重構 `survey.service.ts` 的滿意度分析與週趨勢記憶體分組計算邏輯。
+  - 更新單元測試 `survey.service.test.ts` 以確保新回傳屬性通過測試驗證。
+  - 建立功能計畫 (`PLAN.md`) 與 SOP 文件 (`admin-dashboard-SOP.md`)。
 
 ---
 
