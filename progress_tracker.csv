@@ -10,7 +10,7 @@ Phase 1,P1-008,開發問卷 A 測試,完成 survey.service.ts 單元測試與 Pl
 Phase 1,P1-009,開發後台管理員認證,完成後台管理員 JWT 登入 API 與 HttpOnly Cookie 認證機制,已完成,2026-07-17,2026-07-17,Antigravity,是,是,是,是,是
 Phase 1,P1-010,開發後台儀表板 API,完成 GET /api/admin/stats 與 responses API（含 RBAC 權限驗證）,已完成,2026-07-20,2026-07-20,Antigravity,是,是,是,是,是
 Phase 1,P1-011,開發後台儀表板前端,完成 NPS 圖表/填寫趨勢/低分紅色警示等管理後台畫面,已完成,2026-07-20,2026-07-20,Antigravity,是,是,是,是,是
-Phase 1,P1-012,開發 CSV 匯出功能,完成後台問卷數據匯出 CSV 檔案功能,未開始,,,Antigravity,否,否,否,否,否
+Phase 1,P1-012,開發 CSV 匯出功能,完成後台問卷數據匯出 CSV 檔案功能,已完成,2026-07-20,2026-07-20,Antigravity,是,是,是,是,是
 Phase 2,P2-001,開發問卷 B 市調系統,擴大問卷至市場調查，收集狗狗體型/痛點/加值付費意願等數據,未開始,,,Antigravity,否,否,否,否,否
 Phase 2,P2-002,開發客戶管理 CRM,後台新增客戶清單、每隻狗狗歷史照顧與問卷紀錄,未開始,,,Antigravity,否,否,否,否,否
 Phase 3,P3-001,預約與接送排程系統,開發線上房型預約、接送司機排程與即時位置追蹤,未開始,,,Antigravity,否,否,否,否,否

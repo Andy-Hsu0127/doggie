@@ -22,23 +22,28 @@ export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({
       (r.feedback && r.feedback.toLowerCase().includes(search.toLowerCase()))
   )
 
-  const getConditionLabel = (cond: string) => {
-    if (cond === 'GREAT') return '活蹦亂跳 🐶'
-    if (cond === 'NORMAL') return '正常 😐'
-    return '略顯疲倦 💤'
-  }
+  const getConditionLabel = (c: string) =>
+    c === 'GREAT' ? '活蹦亂跳 🐶' : c === 'NORMAL' ? '正常 😐' : '略顯疲倦 💤'
 
   return (
     <div className="bg-white rounded-2xl border border-amber-100/80 shadow-sm p-5 flex flex-col gap-4">
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-3">
         <h3 className="text-xs font-bold text-amber-800">所有問卷填寫紀錄</h3>
-        <input
-          type="text"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          placeholder="搜尋場次或回饋意見..."
-          className="px-3 py-1.5 border border-amber-200 rounded-xl focus:outline-none focus:border-orange-500 text-xs w-full sm:w-[220px]"
-        />
+        <div className="flex items-center gap-2 w-full sm:w-auto">
+          <input
+            type="text"
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="搜尋場次或回饋意見..."
+            className="px-3 py-1.5 border border-amber-200 rounded-xl focus:outline-none focus:border-orange-500 text-xs w-full sm:w-[200px]"
+          />
+          <button
+            onClick={() => window.open('/api/admin/export', '_blank')}
+            className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl text-xs cursor-pointer transition-all shadow-sm shrink-0"
+          >
+            匯出 CSV 📥
+          </button>
+        </div>
       </div>
 
       <div className="overflow-x-auto">
@@ -57,9 +62,7 @@ export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({
           <tbody>
             {filtered.length === 0 ? (
               <tr>
-                <td colSpan={7} className="p-8 text-center text-amber-600">
-                  無符合條件的問卷紀錄
-                </td>
+                <td colSpan={7} className="p-8 text-center text-amber-600">無符合條件的問卷紀錄</td>
               </tr>
             ) : (
               filtered.map((r) => (
