@@ -18,7 +18,7 @@ export async function POST(request: Request) {
         success: false,
         error: {
           code: ERROR_CODES.VALIDATE_INVALID_FORMAT,
-          message: parsed.error.errors[0]?.message || '輸入資料格式不正確',
+          message: parsed.error.issues[0]?.message || '輸入資料格式不正確',
         },
       }
       return NextResponse.json(response, { status: 400 })

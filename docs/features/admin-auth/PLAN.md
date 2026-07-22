@@ -1,7 +1,7 @@
 # Feature Plan：管理員登入與 JWT 認證系統 (admin-auth)
 
 ## 功能描述
-建立安全的管理後台登入機制。管理員可於 `/login` 頁面輸入信箱與密碼，系統驗證成功後簽發 JWT，並將其安全儲存於 `HttpOnly` Cookie 中（防止 XSS 與 CSRF 攻擊）。使用 Next.js Middleware 對後台路由 `/admin` 進行攔截防護，未授權者自動導向回登入頁。
+建立安全的管理後台登入機制。管理員可於 `/login` 頁面輸入信箱與密碼，系統驗證成功後簽發 JWT，並將其安全儲存於 `HttpOnly` Cookie 中（防止 XSS 與 CSRF 攻擊）。使用 Next.js Proxy 對後台路由 `/admin` 進行攔截防護，未授權者自動導向回登入頁。
 
 ## 所屬 Phase
 Phase 1 (滿意度調查與基礎建設)
@@ -15,7 +15,7 @@ Phase 1 (滿意度調查與基礎建設)
   - `src/services/auth.service.ts` (密碼雜湊驗證、初始帳號 Seed 邏輯)
   - `src/app/api/auth/login/route.ts` (登入 API，簽發 HttpOnly Cookie)
   - `src/app/api/auth/logout/route.ts` (登出 API，清除 HttpOnly Cookie)
-  - `src/middleware.ts` (Next.js 全域路由防護中介層，攔截 `/admin/:path*` 請求)
+  - `src/proxy.ts` (Next.js 全域路由防護代理，攔截 `/admin/:path*` 請求)
 - **登入前端頁面**：
   - `src/app/(admin)/login/page.tsx` (管理員登入頁面)
 - **測試檔案**：

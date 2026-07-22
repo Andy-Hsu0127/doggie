@@ -10,7 +10,14 @@ export const SurveyForm: React.FC = () => {
   const router = useRouter()
   const searchParams = useSearchParams()
   const sessionLabel =
-    searchParams.get('session') || new Date().toISOString().split('T')[0]
+    searchParams.get('session') ||
+    (() => {
+      const d = new Date()
+      const year = d.getFullYear()
+      const month = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    })()
 
   const [ratingOverall, setRatingOverall] = useState(5)
   const [ratingStaff, setRatingStaff] = useState(5)

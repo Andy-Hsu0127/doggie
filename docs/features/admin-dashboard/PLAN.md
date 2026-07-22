@@ -76,7 +76,7 @@ Phase 1 (滿意度調查與基礎建設)
 ---
 
 ## 🔒 後端 API 權限防禦 (符合 Part 7 規範)
-除了 `middleware.ts` 防護前端路由外，後端 API 端點將直接解析並驗證 Cookie 中的 JWT Token，確認 `role` 為 `SUPER_ADMIN` 或 `ANALYST`，否則回傳 `401 Unauthorized` 或 `403 Forbidden`，防止透過 API 繞過前端越權訪問。
+除了 `proxy.ts` 防護前端路由外，後端 API 端點將直接解析並驗證 Cookie 中的 JWT Token，確認 `role` 為 `SUPER_ADMIN` 或 `ANALYST`，否則回傳 `401 Unauthorized` 或 `403 Forbidden`，防止透過 API 繞過前端越權訪問。
 
 ---
 

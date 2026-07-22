@@ -1,3 +1,5 @@
+'use client'
+
 import React, { useState } from 'react'
 
 interface ResponseItem {
@@ -11,11 +13,8 @@ interface ResponseItem {
   submittedAt: string | Date
 }
 
-export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({
-  responses,
-}) => {
+export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({ responses }) => {
   const [search, setSearch] = useState('')
-
   const filtered = responses.filter(
     (r) =>
       r.sessionLabel.toLowerCase().includes(search.toLowerCase()) ||
@@ -66,24 +65,16 @@ export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({
               </tr>
             ) : (
               filtered.map((r) => (
-                <tr
-                  key={r.id}
-                  className="border-b border-amber-50 hover:bg-amber-50/10 text-amber-900 transition-colors"
-                >
+                <tr key={r.id} className="border-b border-amber-50 hover:bg-amber-50/10 text-amber-900 transition-colors">
                   <td className="p-3 font-mono">
-                    {new Date(r.submittedAt)
-                      .toLocaleString('zh-TW', { hour12: false })
-                      .replace(/\//g, '-')}
+                    {new Date(r.submittedAt).toLocaleString('zh-TW', { hour12: false }).replace(/\//g, '-')}
                   </td>
                   <td className="p-3 font-semibold">{r.sessionLabel}</td>
                   <td className="p-3">{r.ratingOverall}★</td>
                   <td className="p-3">{r.ratingStaff}★</td>
                   <td className="p-3">{getConditionLabel(r.dogCondition)}</td>
                   <td className="p-3 font-bold">{r.npsScore}分</td>
-                  <td
-                    className="p-3 max-w-[200px] truncate"
-                    title={r.feedback || ''}
-                  >
+                  <td className="p-3 max-w-[200px] truncate" title={r.feedback || ''}>
                     {r.feedback || '—'}
                   </td>
                 </tr>
@@ -95,3 +86,4 @@ export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({
     </div>
   )
 }
+

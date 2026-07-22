@@ -16,6 +16,39 @@
 
 ---
 
+## [0.7.2] — 2026-07-22
+
+### Performance（效能優化）
+- **後台 Dashboard 渲染與查詢效能提升**：
+  - 將 `/admin/dashboard` 從 Client Component 遷移為 React Server Component（RSC），消除二次 fetch 與客戶端等待來回（RTT），頁面首次加載即完成全數據渲染。
+  - 重構 `SurveyService.getSatisfactionStats()`，採用 Prisma `aggregate` 及 `groupBy` 將統計運算直接交由 SQLite 處理，大幅降低伺服器記憶體開銷與查詢延遲。
+
+### Fixed（修復）
+- **修復 ISO 週數格式化跨年 Bug**：
+  - 於 `SurveyService.getWeekLabel` 輸出格式補上年份資訊（`YYYY-WNN`），防止跨年度相同週數 Key 發生碰撞。
+
+---
+
+## [0.7.1] — 2026-07-21
+
+
+### Fixed（修復）
+- **解決啟動腳本執行異常問題**：
+  - 修復 `start.bat` 因 port 3000 被 stale 服務佔用導致 `ERR_CONNECTION_REFUSED` 錯誤。新增自動偵測並清除 port 3000 衝突程序機制。
+  - 將 Next.js 開發伺服器執行方式從「最小化背景執行」改為「獨立可見視窗執行」，並採用 `cmd /k`，防止伺服器啟動出錯時視窗自動關閉而無法除錯。
+  - 新增伺服器啟動就緒偵測迴圈（最長 15 秒），確保 port 3000 開始監聽後才自動打開瀏覽器頁面，避免提早開啟網頁造成連線失敗。
+- **修復預設場次代碼時區問題**：
+  - 將 `SurveyForm` 預設場次與 CSV 匯出檔名的日期，由 UTC 時間（`toISOString()`）修正為瀏覽器/伺服器當下的本地時間日期，解決清晨或深夜時填寫問卷時產生日期偏差的 Bug。
+
+### Changed（修改）
+- **相容 Next.js 16 新規範**：
+  - 將已棄用的全域中介層 `src/middleware.ts` 遷移至新版 `src/proxy.ts`，並將匯出函式 `middleware` 更名為 `proxy`，以符合 Next.js 16 最新代理架構設計。
+  - 同步修正所有功能計畫與 SOP 文件中關於 middleware 的路徑與描述。
+- **文件與快速開始說明優化**：
+  - 更新 `README.md`，在快速開始章節中新增 `start.bat` 一鍵啟動的完整指南。
+
+---
+
 ## [0.7.0] — 2026-07-20
 
 ### Added（新增）

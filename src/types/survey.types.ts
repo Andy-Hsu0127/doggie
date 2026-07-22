@@ -13,7 +13,7 @@ export const SurveySatisfactionSchema = z.object({
     .min(1, '照顧員評分最低為 1 星')
     .max(5, '照顧員評分最高為 5 星'),
   dogCondition: z.enum(['GREAT', 'NORMAL', 'CONCERN'], {
-    errorMap: () => ({ message: '狗狗狀況必須為 GREAT, NORMAL 或 CONCERN' }),
+    error: '狗狗狀況必須為 GREAT, NORMAL 或 CONCERN',
   }),
   npsScore: z
     .number()
@@ -22,7 +22,7 @@ export const SurveySatisfactionSchema = z.object({
     .max(10, 'NPS 推薦度最高為 10 分'),
   feedback: z.string().max(1000, '意見回饋長度不得超過 1000 字').optional(),
   hasConsented: z.literal(true, {
-    errorMap: () => ({ message: '您必須同意個資收集聲明才能提交問卷' }),
+    error: '您必須同意個資收集聲明才能提交問卷',
   }),
 })
 

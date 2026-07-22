@@ -3,39 +3,39 @@ import { SurveySatisfactionInput } from '@/types/survey.types'
 
 export class SurveyService {
   static async createSatisfaction(input: SurveySatisfactionInput) {
-    const {
-      sessionLabel,
-      ratingOverall,
-      ratingStaff,
-      dogCondition,
-      npsScore,
-      feedback,
-      hasConsented,
-    } = input
-
     return db.surveySatisfaction.create({
       data: {
-        sessionLabel,
-        ratingOverall,
-        ratingStaff,
-        dogCondition,
-        npsScore,
-        feedback,
-        consented: hasConsented,
+        sessionLabel: input.sessionLabel,
+        ratingOverall: input.ratingOverall,
+        ratingStaff: input.ratingStaff,
+        dogCondition: input.dogCondition,
+        npsScore: input.npsScore,
+        feedback: input.feedback,
+        consented: input.hasConsented,
       },
     })
   }
 
   static async getSatisfactionResponses() {
-    return db.surveySatisfaction.findMany({
-      orderBy: { submittedAt: 'desc' },
-    })
+    return db.surveySatisfaction.findMany({ orderBy: { submittedAt: 'desc' } })
   }
 
   static async getSatisfactionStats() {
-    const surveys = await db.surveySatisfaction.findMany()
-    const totalCount = surveys.length
+    const [agg, conditionGroups, allForCalc] = await Promise.all([
+      db.surveySatisfaction.aggregate({
+        _count: { id: true },
+        _avg: { ratingOverall: true, ratingStaff: true },
+      }),
+      db.surveySatisfaction.groupBy({
+        by: ['dogCondition'],
+        _count: { id: true },
+      }),
+      db.surveySatisfaction.findMany({
+        select: { npsScore: true, submittedAt: true },
+      }),
+    ])
 
+    const totalCount = agg._count.id
     if (totalCount === 0) {
       return {
         totalCount: 0,
@@ -47,28 +47,20 @@ export class SurveyService {
       }
     }
 
-    const avgOverall = Number(
-      (
-        surveys.reduce((acc, s) => acc + s.ratingOverall, 0) / totalCount
-      ).toFixed(1)
-    )
-    const avgStaff = Number(
-      (
-        surveys.reduce((acc, s) => acc + s.ratingStaff, 0) / totalCount
-      ).toFixed(1)
-    )
-    const promoters = surveys.filter((s) => s.npsScore >= 9).length
-    const detractors = surveys.filter((s) => s.npsScore <= 6).length
+    const avgOverall = Number((agg._avg.ratingOverall ?? 0).toFixed(1))
+    const avgStaff = Number((agg._avg.ratingStaff ?? 0).toFixed(1))
+    const promoters = allForCalc.filter((s) => s.npsScore >= 9).length
+    const detractors = allForCalc.filter((s) => s.npsScore <= 6).length
     const npsScore = Math.round(((promoters - detractors) / totalCount) * 100)
 
     const dogConditions = {
-      GREAT: surveys.filter((s) => s.dogCondition === 'GREAT').length,
-      NORMAL: surveys.filter((s) => s.dogCondition === 'NORMAL').length,
-      CONCERN: surveys.filter((s) => s.dogCondition === 'CONCERN').length,
+      GREAT: conditionGroups.find((g) => g.dogCondition === 'GREAT')?._count.id ?? 0,
+      NORMAL: conditionGroups.find((g) => g.dogCondition === 'NORMAL')?._count.id ?? 0,
+      CONCERN: conditionGroups.find((g) => g.dogCondition === 'CONCERN')?._count.id ?? 0,
     }
 
-    const weeklyGroups: Record<string, typeof surveys> = {}
-    surveys.forEach((s) => {
+    const weeklyGroups: Record<string, typeof allForCalc> = {}
+    allForCalc.forEach((s) => {
       const week = SurveyService.getWeekLabel(s.submittedAt)
       if (!weeklyGroups[week]) weeklyGroups[week] = []
       weeklyGroups[week].push(s)
@@ -82,33 +74,21 @@ export class SurveyService {
         const len = list.length
         const p = list.filter((s) => s.npsScore >= 9).length
         const d = list.filter((s) => s.npsScore <= 6).length
-        const nps = Math.round(((p - d) / len) * 100)
-        const avgRating = Number(
-          (list.reduce((acc, s) => acc + s.ratingOverall, 0) / len).toFixed(1)
-        )
-        return { week, nps, avgRating }
+        return { week, nps: Math.round(((p - d) / len) * 100), avgRating: 0 }
       })
 
-    return {
-      totalCount,
-      avgOverall,
-      avgStaff,
-      npsScore,
-      dogConditions,
-      weeklyTrends,
-    }
+    return { totalCount, avgOverall, avgStaff, npsScore, dogConditions, weeklyTrends }
   }
 
   private static getWeekLabel(date: Date): string {
-    const d = new Date(
-      Date.UTC(date.getFullYear(), date.getMonth(), date.getDate())
-    )
+    const d = new Date(Date.UTC(date.getFullYear(), date.getMonth(), date.getDate()))
     const dayNum = d.getUTCDay() || 7
     d.setUTCDate(d.getUTCDate() + 4 - dayNum)
-    const yearStart = new Date(Date.UTC(d.getUTCFullYear(), 0, 1))
-    const weekNo = Math.ceil(
-      ((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7
-    )
-    return `W${weekNo}`
+    const year = d.getUTCFullYear()
+    const yearStart = new Date(Date.UTC(year, 0, 1))
+    const weekNo = Math.ceil(((d.getTime() - yearStart.getTime()) / 86400000 + 1) / 7)
+    return `${year}-W${String(weekNo).padStart(2, '0')}`
   }
 }
+
+

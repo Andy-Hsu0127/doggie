@@ -42,7 +42,13 @@ export async function GET() {
       .join('\n')
 
     const csvContent = '\ufeff' + csvHeaders + csvRows
-    const dateStr = new Date().toISOString().split('T')[0]
+    const dateStr = (() => {
+      const d = new Date()
+      const year = d.getFullYear()
+      const month = String(d.getMonth() + 1).padStart(2, '0')
+      const day = String(d.getDate()).padStart(2, '0')
+      return `${year}-${month}-${day}`
+    })()
 
     return new Response(csvContent, {
       status: 200,
