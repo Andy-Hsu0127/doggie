@@ -6,8 +6,6 @@ const fs = require('fs')
 
 const CTRL_PORT = 3001
 const ROOT = path.join(__dirname, '../..')
-
-
 let appProcess = null
 const logBuffer = []
 const MAX_LOGS = 500
@@ -43,35 +41,28 @@ function startApp() {
 }
 
 function stopApp(cb) {
-  if (!appProcess) { cb?.(); return }
-  const pid = appProcess.pid
-  addLog(`■ 正在停止伺服器 (PID: ${pid})...`, 'info')
-  exec(`taskkill /pid ${pid} /f /t`, () => {
+  addLog('■ 正在完全停止伺服器與 Port 3000...', 'info')
+  const kill3000 = `for /f "tokens=5" %a in ('netstat -aon ^| findstr :3000 ^| findstr LISTENING 2^>nul') do taskkill /f /pid %a`
+  exec(kill3000, () => {
+    if (appProcess) { try { exec(`taskkill /pid ${appProcess.pid} /f /t`) } catch (_) {} }
     appProcess = null
     broadcast({ ev: 'status', running: false, pid: null })
-    addLog('✓ 伺服器已停止', 'info')
+    addLog('✓ 伺服器與 Port 3000 已完全停止', 'info')
     cb?.()
   })
 }
 
 const HTML = fs.readFileSync(path.join(__dirname, 'controller.html'), 'utf-8')
-
 const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
   'Access-Control-Allow-Headers': 'Content-Type',
 }
 
-
 const server = http.createServer((req, res) => {
   const url = new URL(req.url, 'http://localhost')
   const key = `${req.method} ${url.pathname}`
-
-  // CORS preflight
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204, CORS); return res.end()
-  }
-
+  if (req.method === 'OPTIONS') { res.writeHead(204, CORS); return res.end() }
   if (key === 'GET /') {
     res.writeHead(200, { 'Content-Type': 'text/html;charset=utf-8', ...CORS })
     return res.end(HTML)
@@ -100,8 +91,8 @@ const server = http.createServer((req, res) => {
 
 process.on('SIGINT', () => stopApp(() => process.exit(0)))
 process.on('exit', () => { if (appProcess) exec(`taskkill /pid ${appProcess.pid} /f /t`) })
-
 server.listen(CTRL_PORT, '127.0.0.1', () => {
   console.log(`\n🐾  Doggie 控制台已啟動  →  http://localhost:${CTRL_PORT}\n`)
   addLog(`✓ 控制伺服器就緒 (port ${CTRL_PORT})`, 'info')
 })
+
