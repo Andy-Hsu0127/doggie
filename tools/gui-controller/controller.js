@@ -94,5 +94,6 @@ process.on('exit', () => { if (appProcess) exec(`taskkill /pid ${appProcess.pid}
 server.listen(CTRL_PORT, '127.0.0.1', () => {
   console.log(`\n🐾  Doggie 控制台已啟動  →  http://localhost:${CTRL_PORT}\n`)
   addLog(`✓ 控制伺服器就緒 (port ${CTRL_PORT})`, 'info')
+  exec(`start http://localhost:${CTRL_PORT}`)
 })
 

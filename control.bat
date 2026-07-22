@@ -14,14 +14,16 @@ if %errorlevel% neq 0 (
 )
 
 for /f "tokens=5" %%a in ('netstat -aon ^| findstr :3001 ^| findstr LISTENING 2^>nul') do (
-    echo [INFO] Clearing stale controller on port 3001 (PID: %%a)...
+    echo [INFO] Clearing stale controller on port 3001 ^(PID: %%a^)...
     taskkill /f /pid %%a >nul 2>&1
 )
 
-echo [INFO] Opening browser...
-start http://localhost:3001
-
 echo [INFO] Starting GUI controller server...
 node tools/gui-controller/controller.js
+
+echo.
+echo [INFO] Controller stopped. Press any key to close.
+pause >nul
+
 
 
