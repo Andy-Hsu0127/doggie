@@ -38,9 +38,9 @@ export const ResponseTable: React.FC<{ responses: ResponseItem[] }> = ({ respons
           />
           <button
             onClick={() => window.open('/api/admin/export', '_blank')}
-            className="px-3 py-1.5 bg-orange-500 hover:bg-orange-600 text-white font-semibold rounded-xl text-xs cursor-pointer transition-all shadow-sm shrink-0"
+            className="px-3.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-xl text-xs font-bold transition-all flex items-center gap-1.5 cursor-pointer whitespace-nowrap"
           >
-            匯出 CSV 📥
+            📥 匯出 Excel 報表
           </button>
         </div>
       </div>
