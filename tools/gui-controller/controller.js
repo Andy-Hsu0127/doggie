@@ -29,14 +29,43 @@ function addLog(raw, type = 'out') {
 function startApp() {
   if (appProcess) { addLog('⚠ 伺服器已在運行中', 'info'); return }
   addLog('▶ 啟動 Next.js 開發伺服器...', 'info')
-  appProcess = spawn('npm run dev', [], { cwd: ROOT, shell: true })
-  broadcast({ ev: 'status', running: true, pid: appProcess.pid })
-  appProcess.stdout.on('data', d => addLog(d.toString(), 'out'))
-  appProcess.stderr.on('data', d => addLog(d.toString(), 'err'))
-  appProcess.on('exit', code => {
-    addLog(`■ 伺服器已停止 (exit: ${code ?? '—'})`, 'info')
-    appProcess = null
-    broadcast({ ev: 'status', running: false, pid: null })
+
+  exec('netstat -ano | findstr :3000', (err, stdout) => {
+    const pids = new Set()
+    if (stdout) {
+      stdout.split(/\r?\n/).forEach(line => {
+        if (line.includes('LISTENING')) {
+          const parts = line.trim().split(/\s+/)
+          const pid = parts[parts.length - 1]
+          if (pid && pid !== '0') pids.add(pid)
+        }
+      })
+    }
+
+    const doSpawn = () => {
+      appProcess = spawn('npm run dev', [], { cwd: ROOT, shell: true })
+      broadcast({ ev: 'status', running: true, pid: appProcess.pid })
+      appProcess.stdout.on('data', d => addLog(d.toString(), 'out'))
+      appProcess.stderr.on('data', d => addLog(d.toString(), 'err'))
+      appProcess.on('exit', code => {
+        addLog(`■ 伺服器已停止 (exit: ${code ?? '—'})`, 'info')
+        appProcess = null
+        broadcast({ ev: 'status', running: false, pid: null })
+      })
+    }
+
+    if (pids.size > 0) {
+      addLog(`🧹 偵測到殘留的 Port 3000 程序 (PID: ${Array.from(pids).join(', ')})，進行自動清理...`, 'info')
+      let count = 0
+      pids.forEach(pid => {
+        exec(`taskkill /f /t /pid ${pid}`, () => {
+          count++
+          if (count === pids.size) setTimeout(doSpawn, 500)
+        })
+      })
+    } else {
+      doSpawn()
+    }
   })
 }
 
