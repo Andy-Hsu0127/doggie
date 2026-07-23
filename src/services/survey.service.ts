@@ -96,5 +96,3 @@ export class SurveyService {
     return `${year}-W${String(weekNo).padStart(2, '0')}`
   }
 }
-
-
