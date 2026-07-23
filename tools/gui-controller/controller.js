@@ -134,6 +134,19 @@ const server = http.createServer((req, res) => {
 
 process.on('SIGINT', () => stopApp(() => process.exit(0)))
 process.on('exit', () => { if (appProcess) exec(`taskkill /pid ${appProcess.pid} /f /t`) })
+server.on('error', (err) => {
+  if (err.code === 'EADDRINUSE') {
+    console.log(`[INFO] Port ${CTRL_PORT} is in use. Clearing stale controller process...`)
+    exec(`for /f "tokens=5" %a in ('netstat -aon ^| findstr :${CTRL_PORT} ^| findstr LISTENING 2^>nul') do taskkill /f /pid %a`, () => {
+      setTimeout(() => {
+        server.listen(CTRL_PORT, '127.0.0.1')
+      }, 600)
+    })
+  } else {
+    console.error('Server error:', err)
+  }
+})
+
 server.listen(CTRL_PORT, '127.0.0.1', () => {
   console.log(`\n🐾  Doggie 控制台已啟動  →  http://localhost:${CTRL_PORT}\n`)
   addLog(`✓ 控制伺服器就緒 (port ${CTRL_PORT})`, 'info')
