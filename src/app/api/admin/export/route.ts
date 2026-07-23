@@ -20,7 +20,7 @@ export async function GET() {
     ws.getRow(1).height = 30
 
     ws.mergeCells('A2:H2')
-    ws.getCell('A2').value = `匯出時間：${new Date().toLocaleString('zh-TW')}  |  產出者：${admin.name}`
+    ws.getCell('A2').value = `匯出時間：${new Date().toLocaleString('zh-TW')}  |  產出者：${admin.email}`
     ws.getCell('A2').font = { name: 'Microsoft JhengHei', size: 9, color: { argb: 'FF737373' } }
     ws.getRow(2).height = 18
 
