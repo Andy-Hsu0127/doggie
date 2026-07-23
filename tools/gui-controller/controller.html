@@ -256,10 +256,13 @@
             ▶&nbsp; 啟動伺服器
           </button>
           <button class="btn btn-stop" id="btnStop" onclick="doAction('stop')">
-            ■&nbsp; 停止伺服器
+            ■&nbsp; 停止伺服器 (Port 3000)
           </button>
           <button class="btn btn-open" id="btnOpen" onclick="openApp()" disabled>
             ↗&nbsp; 開啟應用程式
+          </button>
+          <button class="btn btn-stop" style="background: rgba(239,68,68,0.2); border-color: rgba(239,68,68,0.4); color: #f87171;" onclick="doShutdown()">
+            ✕&nbsp; 關閉控制台與所有服務
           </button>
         </div>
       </div>
@@ -367,6 +370,17 @@
   async function doAction(action) {
     document.getElementById(`btn${action === 'start' ? 'Start' : 'Stop'}`).disabled = true
     try { await fetch(`${API_BASE}/api/${action}`, { method: 'POST' }) } catch (_) {}
+  }
+
+  async function doShutdown() {
+    if (!confirm('確定要完整關閉控制器與 Next.js 伺服器嗎？')) return
+    try {
+      await fetch(`${API_BASE}/api/shutdown`, { method: 'POST' })
+      alert('已送出關閉指令，控制台與服務已完全退出。您可以關閉此網頁頁面。')
+      window.close()
+    } catch (_) {
+      alert('控制台已關閉')
+    }
   }
 
   // SSE

@@ -41,14 +41,44 @@ function startApp() {
 }
 
 function stopApp(cb) {
-  addLog('■ 正在完全停止伺服器與 Port 3000...', 'info')
-  const kill3000 = `for /f "tokens=5" %a in ('netstat -aon ^| findstr :3000 ^| findstr LISTENING 2^>nul') do taskkill /f /pid %a`
-  exec(kill3000, () => {
-    if (appProcess) { try { exec(`taskkill /pid ${appProcess.pid} /f /t`) } catch (_) {} }
-    appProcess = null
-    broadcast({ ev: 'status', running: false, pid: null })
-    addLog('✓ 伺服器與 Port 3000 已完全停止', 'info')
-    cb?.()
+  addLog('■ 正在關閉專案伺服器 (Port 3000)...', 'info')
+  exec('netstat -ano | findstr :3000', (err, stdout) => {
+    if (!stdout || err) {
+      if (appProcess) { try { exec(`taskkill /pid ${appProcess.pid} /f /t`) } catch (_) {} }
+      appProcess = null
+      broadcast({ ev: 'status', running: false, pid: null })
+      addLog('✓ Port 3000 未佔用，專案伺服器已完全關閉', 'info')
+      return cb?.()
+    }
+
+    const pids = new Set()
+    stdout.split(/\r?\n/).forEach(line => {
+      if (line.includes('LISTENING')) {
+        const parts = line.trim().split(/\s+/)
+        const pid = parts[parts.length - 1]
+        if (pid && pid !== '0') pids.add(pid)
+      }
+    })
+
+    if (pids.size === 0) {
+      appProcess = null
+      broadcast({ ev: 'status', running: false, pid: null })
+      addLog('✓ 專案伺服器已完整關閉', 'info')
+      return cb?.()
+    }
+
+    let count = 0
+    pids.forEach(pid => {
+      exec(`taskkill /f /t /pid ${pid}`, () => {
+        count++
+        if (count === pids.size) {
+          appProcess = null
+          broadcast({ ev: 'status', running: false, pid: null })
+          addLog(`✓ 已精準清理 Port 3000 程序 (PID: ${Array.from(pids).join(', ')})`, 'info')
+          cb?.()
+        }
+      })
+    })
   })
 }
 
@@ -85,6 +115,19 @@ const server = http.createServer((req, res) => {
   }
   if (key === 'POST /api/stop') {
     return stopApp(() => { res.writeHead(200, { 'Content-Type': 'application/json', ...CORS }); res.end('{"ok":true}') })
+  }
+  if (key === 'POST /api/shutdown') {
+    addLog('🛑 收到完全關閉指令，正在清除所有控制介面與服務...', 'info')
+    res.writeHead(200, { 'Content-Type': 'application/json', ...CORS })
+    res.end('{"ok":true}')
+    stopApp(() => {
+      setTimeout(() => {
+        exec(`for /f "tokens=5" %a in ('netstat -aon ^| findstr :3001 ^| findstr LISTENING 2^>nul') do taskkill /f /pid %a`, () => {
+          process.exit(0)
+        })
+      }, 500)
+    })
+    return
   }
   res.writeHead(404, CORS); res.end()
 })
