@@ -9,6 +9,7 @@ vi.mock('@/lib/db', () => ({
       findMany: vi.fn(),
       aggregate: vi.fn(),
       groupBy: vi.fn(),
+      count: vi.fn(),
     },
   },
 }))
@@ -17,7 +18,8 @@ describe('SurveyService', () => {
   beforeEach(() => vi.clearAllMocks())
 
   describe('createSatisfaction', () => {
-    it('should call db.surveySatisfaction.create with mapped data', async () => {
+    it('should call db.surveySatisfaction.create with mapped data and serial number', async () => {
+      vi.mocked(db.surveySatisfaction.count).mockResolvedValue(0)
       const input = {
         sessionLabel: '2026-07-17',
         ratingOverall: 5,
@@ -30,7 +32,7 @@ describe('SurveyService', () => {
       await SurveyService.createSatisfaction(input)
       expect(db.surveySatisfaction.create).toHaveBeenCalledWith({
         data: {
-          sessionLabel: '2026-07-17',
+          sessionLabel: '20260717-A01',
           ratingOverall: 5,
           ratingStaff: 5,
           dogCondition: 'GREAT',

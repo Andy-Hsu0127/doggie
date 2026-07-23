@@ -3,9 +3,15 @@ import { SurveySatisfactionInput } from '@/types/survey.types'
 
 export class SurveyService {
   static async createSatisfaction(input: SurveySatisfactionInput) {
+    let base = input.sessionLabel.replace(/-/g, '')
+    if (!/[A-Z]/.test(base)) base = `${base}-A`
+    const count = await db.surveySatisfaction.count({
+      where: { sessionLabel: { startsWith: base } },
+    })
+    const finalLabel = `${base}${String(count + 1).padStart(2, '0')}`
     return db.surveySatisfaction.create({
       data: {
-        sessionLabel: input.sessionLabel,
+        sessionLabel: finalLabel,
         ratingOverall: input.ratingOverall,
         ratingStaff: input.ratingStaff,
         dogCondition: input.dogCondition,
