@@ -70,11 +70,4 @@ export async function GET() {
     const dateStr = new Date().toISOString().slice(0, 10)
     return new Response(buffer, { status: 200, headers: { 'Content-Type': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'Content-Disposition': `attachment; filename=doggie_survey_export_${dateStr}.xlsx` } })
   } catch { return NextResponse.json({ success: false, error: { message: '資料匯出失敗' } }, { status: 500 }) }
-}adsheetml.sheet',
-        'Content-Disposition': `attachment; filename=doggie_survey_export_${dateStr}.xlsx`,
-      },
-    })
-  } catch (error: any) {
-    return NextResponse.json({ success: false, error: { message: '資料匯出失敗' } }, { status: 500 })
-  }
 }
